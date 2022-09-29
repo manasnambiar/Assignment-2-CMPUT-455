@@ -1,0 +1,46 @@
+boardsize 2
+clear_board
+
+10 solve
+#? [b a1|b a2|b b1|b b2]
+# All four moves win so all these are correct answers
+
+play b a1
+
+20 solve
+#? [b]
+# comment: It was white's turn but white loses, so we do not write a move
+
+play w a2
+
+30 solve
+#? [b b1]
+
+boardsize 7
+clear_board
+
+40 solve
+#? [unknown]
+# too hard to solve
+
+timelimit 100
+
+50 solve
+#? [unknown]
+# Still too hard to solve
+
+boardsize 2
+clear_board
+
+play b b2
+play w a1
+# comment: the command line session has genmove's here, which can return several different correct moves. But we cannot
+# do the remaining tests if we do not know the response here.
+
+60 genmove b
+#? [a2|b1]
+# both moves win for b
+
+70 genmove w
+#? [resign]
+# white has no legal move
