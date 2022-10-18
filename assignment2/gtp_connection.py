@@ -13,9 +13,10 @@ import numpy as np
 import re
 from sys import stdin, stdout, stderr
 from typing import Any, Callable, Dict, List, Tuple
-from assignment2.board_base import is_black_white_empty
+from board_base import is_black_white_empty
 from transposition_table_simple import TranspositionTable
 import time
+import random
 
 from board_base import (
     is_black_white,
@@ -381,9 +382,17 @@ class GtpConnection:
     """Negamax code"""
     def storeResult(self, tt, state, result):
         
-        tt.store(state.code(), result)
+        tt.store(self.code(), result)
         return result
 
+    def zobristHash(self, state):
+
+        hash = 0
+        for i in state:
+            if i != BORDER:
+                piece = state[i]
+                hash ^= 
+        return c
     # def staticallyEvaluateForToPlay(self):
         
     #     if len
@@ -397,7 +406,7 @@ class GtpConnection:
 
     def negamaxBoolean(self, state, tt):
         
-        result = tt.lookup(state.code())
+        result = tt.lookup(self.code())
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
         if result != None:
             return result
@@ -405,10 +414,10 @@ class GtpConnection:
             result = True
             return self.storeResult(tt, state, result)
         for m in state.legal_moves():
-            state[m] = state.current_player
+            self.board[m] = self.board.current_player
             success = not self.negamaxBoolean(state, tt)
-            state[m] = EMPTY    # undo move
-            state.current_player = self.board.current_player
+            self.board[m] = EMPTY    # undo move
+            # self.board.current_player = self.board.current_player
             if success:
                 return self.storeResult(tt, state, True)
         return self.storeResult(tt, state, False)
@@ -434,12 +443,6 @@ class GtpConnection:
             return EMPTY
         else:
             return opponent(self.board.current_player)
-
-    def timelimit(self, seconds):
-
-        
-
-        return
 
     """
     ==========================================================================
