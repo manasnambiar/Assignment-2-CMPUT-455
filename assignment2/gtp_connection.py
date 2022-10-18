@@ -435,6 +435,12 @@ class GtpConnection:
         else:
             return opponent(self.board.current_player)
 
+    def timelimit(self, seconds):
+
+        
+
+        return
+
     """
     ==========================================================================
     Assignment 2 - game-specific commands end here
