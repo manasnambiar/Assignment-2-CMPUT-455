@@ -1,0 +1,32 @@
+boardsize 4
+clear_board
+timelimit 50
+play b a4
+10 solve
+#?[w d1]
+
+boardsize 4
+clear_board
+timelimit 50
+play b a4
+play w a2
+20 solve
+#?[b a1|b b3|b b2|b b1|b c3|b c2|b c1]
+
+boardsize 5
+clear_board
+timelimit 100
+play b a1
+play w a5
+play b e1
+play w e5
+play b e3
+play w e2
+play b c5
+play w d4
+play b c3
+play w b2
+play b c2
+30 solve
+#?[b]
+
