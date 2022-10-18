@@ -49,6 +49,7 @@ class GtpConnection:
         self._debug_mode: bool = debug_mode
         self.go_engine = go_engine
         self.board: GoBoard = board
+        self.seconds = 1
         self.commands: Dict[str, Callable[[List[str]], None]] = {
             "protocol_version": self.protocol_version_cmd,
             "quit": self.quit_cmd,
@@ -65,7 +66,8 @@ class GtpConnection:
             "legal_moves": self.legal_moves_cmd,
             "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
-            "solve": self.solve_cmd
+            "solve": self.solve_cmd,
+            "timelimt": self.timelimit_cmd
         }
 
         # argmap is used for argument checking
@@ -443,6 +445,10 @@ class GtpConnection:
             return EMPTY
         else:
             return opponent(self.board.current_player)
+
+    def timelimit_cmd(self, sec):
+        if (1 <= sec <= 100):
+            self.seconds = sec
 
     """
     ==========================================================================
