@@ -327,6 +327,9 @@ class GtpConnection:
         try:
             board_color = args[0].lower()
             board_move = args[1]
+            if board_move.lower() == "pass":
+                self.respond("illegal move")
+                return
             color = color_to_int(board_color)
             
             coord = move_to_coord(args[1], self.board.size)
@@ -357,98 +360,142 @@ class GtpConnection:
         # change this method to use your solver
         board_color = args[0].lower()
         color = color_to_int(board_color)
-        move = self.go_engine.get_move(self.board, color)
-        legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
+        move = self.solve_cmd(args)
+
         if move is None:
             self.respond('unknown')
             return
 
-        if len(legal_moves) > 0:
-            result = self.solve_cmd("genmove_cmd")
-            if (result != BLACK and result != WHITE and result != EMPTY):
-                move_coord = point_to_coord(move, self.board.size)
-                move_as_string = format_point(move_coord)
-                if self.board.is_legal(move, color):
-                    self.board.play_move(move, color)
-                    self.respond(move_as_string)
-            else:
-                move = GoBoardUtil.generate_random_move(self.board, self.board.current_player, False)
-                move_coord = point_to_coord(move, self.board.size)
-                move_as_string = format_point(move_coord)
-                if self.board.is_legal(move, color):
-                    self.board.play_move(move, color)
-                    self.respond(move_as_string)
+        if len(move) > 1:
+            move_coord = move_to_coord(move[1], self.board.size)
+            move = coord_to_point(move_coord[0], move_coord[1], self.board.size)
+            temp_move_as_string = format_point(move_coord)
+            if self.board.is_legal(move, color):
+                self.board.play_move(move, color)
+                #self.respond(move_as_string)
+                return
+        
+        move = GoBoardUtil.generate_random_move(self.board, self.board.current_player, False)
+        move_coord = point_to_coord(move, self.board.size)
+        move_as_string = format_point(move_coord)
+        if self.board.is_legal(move, color):
+            self.board.play_move(move, color)
+            self.respond(move_as_string)
         else:
             self.respond("Illegal move: {}".format(move_as_string))
             
-    """Negamax code"""
-    def storeResult(self, tt, state, result):
+    
+    def solve_cmd(self, args: List[str]):
         
-        tt.store(self.code(), result)
+        state = self.board
+
+        start_time = time.process_time()
+        result = self.negamaxBoolean(state)
+        total_time = time.process_time() - start_time
+
+        if total_time > self.seconds:
+            self.respond("unknown")
+            return False
+
+        is_success = result.get("is_success")
+        color = self.board.current_player
+
+        if is_success:
+            move = result.get("move")
+            move_coord = point_to_coord(move, self.board.size)
+            move_as_string = format_point(move_coord)
+            row = move_as_string[0].lower()
+            col = move_as_string[1]
+            if color == BLACK:
+                self.respond("b {}{}".format(row, col))
+                return ["b", move_as_string]
+            else:
+                self.respond("w {}{}".format(row, col))
+                return ["w", move_as_string]
+        else:
+            if color == BLACK:
+                self.respond("w {}{}".format(row, col))
+                return ["w"]
+            else:
+                self.respond("b {}{}".format(row, col))
+                return ["b"]
+
+        # self.setDrawWinner(opponent(self.board.current_player))
+        # win = self.call_search(self.board)
+        # if win:
+        #     return self.board.current_player()
+        # self.setDrawWinner(self.board.current_player)
+        # if self.call_search(self.board.current_player):
+        #     return EMPTY
+        # else:
+        #     return opponent(self.board.current_player)
+
+    # def call_search(self, state):
+         
+    #      # tt = TranspositionTable()
+    #      return self.negamaxBoolean(state)
+    
+    # def storeResult(self, tt, state, result):
+        
+    #     tt.store(self.code(), result)
+    #     return result
+
+    def negamaxBoolean(self, state):
+        
+        legal_moves = GoBoardUtil.generate_legal_moves(self.board, state.current_player)
+        result = {}
+        
+        if len(legal_moves) == 0:   # no more legal moves remain
+            result["is_success"] = False
+            return False
+
+        for move in legal_moves:
+            state.board[move] = state.current_player
+            success = self.negamaxBoolean(state)
+            state.board[move] = EMPTY
+            state.current_player = opponent(state.current_player)
+            if success:
+                result["is_success"] = True
+                result["move"] = move
+                return result
+
+        result["is_success"] = False
         return result
 
-    def zobristHash(self, state):
+    # def negamaxBoolean(self, state, tt):
 
-        hash = 0
-        for i in state:
-            if i != BORDER:
-                piece = state[i]
-                hash ^= 
-        return c
-    # def staticallyEvaluateForToPlay(self):
-        
-    #     if len
-    #     winColor = self.winner()
-    #     if (winColor == EMPTY) and (self.drawWinner != EMPTY):
-    #         winColor = self.drawWinner
-    #     if winColor == self.toPlay:
-    #         return True
-    #     assert winColor == opponent(self.toPlay)
-    #     return False
-
-    def negamaxBoolean(self, state, tt):
-        
-        result = tt.lookup(self.code())
-        legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
-        if result != None:
-            return result
-        if (len(legal_moves) == 0):
-            result = True
-            return self.storeResult(tt, state, result)
-        for m in state.legal_moves():
-            self.board[m] = self.board.current_player
-            success = not self.negamaxBoolean(state, tt)
-            self.board[m] = EMPTY    # undo move
-            # self.board.current_player = self.board.current_player
-            if success:
-                return self.storeResult(tt, state, True)
-        return self.storeResult(tt, state, False)
-
-    def call_search(self, state):
-         
-         tt = TranspositionTable()
-         return self.negamaxBoolean(state, tt)
-
-    def setDrawWinner(self, color):
-
-        assert is_black_white_empty(color)
-        self.draw_winner = color
-
-    def solve_cmd(self, args: List[str]) -> GO_COLOR:
-        
-        self.setDrawWinner(opponent(self.board.current_player))
-        win = self.call_search(self.board)
-        if win:
-            return self.board.current_player()
-        self.setDrawWinner(self.board.current_player)
-        if self.call_search(self.board.current_player):
-            return EMPTY
-        else:
-            return opponent(self.board.current_player)
-
+        # result = tt.lookup(self.code())
+        # legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
+        # if result != None:
+        #     return result
+        # if (len(legal_moves) == 0):
+        #     result = True
+        #     return self.storeResult(tt, state, result)
+        # for m in state.legal_moves():
+        #     self.board[m] = self.board.current_player
+        #     success = not self.negamaxBoolean(state, tt)
+        #     self.board[m] = EMPTY    # undo move
+        #     # self.board.current_player = self.board.current_player
+        #     if success:
+        #         return self.storeResult(tt, state, True)
+        # return self.storeResult(tt, state, False)
+    
     def timelimit_cmd(self, sec):
+        
         if (1 <= sec <= 100):
-            self.seconds = sec
+            self.seconds = int(sec)
+
+
+    
+
+    # def setDrawWinner(self, color):
+
+    #     assert is_black_white_empty(color)
+    #     self.draw_winner = color
+
+    
+
+
 
     """
     ==========================================================================
