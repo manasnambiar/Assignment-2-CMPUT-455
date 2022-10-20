@@ -67,7 +67,7 @@ class GtpConnection:
             "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
             "solve": self.solve_cmd,
-            "timelimt": self.timelimit_cmd
+            "timelimit": self.timelimit_cmd
         }
 
         # argmap is used for argument checking
@@ -376,6 +376,9 @@ class GtpConnection:
                 return
         
         move = GoBoardUtil.generate_random_move(self.board, self.board.current_player, False)
+        if move is None:
+            self.respond('unknown')
+            return
         move_coord = point_to_coord(move, self.board.size)
         move_as_string = format_point(move_coord)
         if self.board.is_legal(move, color):
@@ -414,10 +417,10 @@ class GtpConnection:
                 return ["w", move_as_string]
         else:
             if color == BLACK:
-                self.respond("w {}{}".format(row, col))
+                self.respond("w")
                 return ["w"]
             else:
-                self.respond("b {}{}".format(row, col))
+                self.respond("b")
                 return ["b"]
 
         # self.setDrawWinner(opponent(self.board.current_player))
@@ -447,7 +450,7 @@ class GtpConnection:
         
         if len(legal_moves) == 0:   # no more legal moves remain
             result["is_success"] = False
-            return False
+            return result
 
         for move in legal_moves:
             state.board[move] = state.current_player
@@ -462,40 +465,11 @@ class GtpConnection:
         result["is_success"] = False
         return result
 
-    # def negamaxBoolean(self, state, tt):
-
-        # result = tt.lookup(self.code())
-        # legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
-        # if result != None:
-        #     return result
-        # if (len(legal_moves) == 0):
-        #     result = True
-        #     return self.storeResult(tt, state, result)
-        # for m in state.legal_moves():
-        #     self.board[m] = self.board.current_player
-        #     success = not self.negamaxBoolean(state, tt)
-        #     self.board[m] = EMPTY    # undo move
-        #     # self.board.current_player = self.board.current_player
-        #     if success:
-        #         return self.storeResult(tt, state, True)
-        # return self.storeResult(tt, state, False)
-    
     def timelimit_cmd(self, sec):
-        
-        if (1 <= sec <= 100):
-            self.seconds = int(sec)
-
-
+        second = int(sec[0])
+        if (1 <= second <= 100):
+            self.seconds = second
     
-
-    # def setDrawWinner(self, color):
-
-    #     assert is_black_white_empty(color)
-    #     self.draw_winner = color
-
-    
-
-
 
     """
     ==========================================================================
