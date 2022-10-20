@@ -1,0 +1,22 @@
+boardsize 4
+clear_board
+timelimit 20
+play b a4
+10 solve
+#?[unknown]
+
+boardsize 5
+clear_board
+timelimit 100
+play b a5
+20 solve
+#?[unknown]
+
+boardsize 5
+clear_board
+timelimit 100
+play b a5
+play w e5
+play b a1
+30 solve
+#?[unknown]
