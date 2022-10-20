@@ -14,6 +14,7 @@ import re
 from sys import stdin, stdout, stderr
 from typing import Any, Callable, Dict, List, Tuple
 from board_base import is_black_white_empty
+from transposition_table_simple import TranspositionTable
 import time
 import random
 
