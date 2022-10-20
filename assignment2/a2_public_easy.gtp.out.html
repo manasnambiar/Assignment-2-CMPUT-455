@@ -23,17 +23,223 @@ span.test { font-weight:bold; }
 </td></tr>
 </table>
 <table width="100%" bgcolor="#e0e0e0">
-<tr><th align="left">Date:</th><td>October 19, 2022 at 11:20:45 PM MDT</td></tr>
+<tr><th align="left">Date:</th><td>October 19, 2022 at 11:33:43 PM MDT</td></tr>
 <tr><th align="left">Host:</th><td>Harkirats-MacBook-Pro.local</td></tr>
 <tr><th align="left" valign="top">Command:</th>
 <td valign="top"><tt>./Go0.py</tt></td></tr>
 </table>
 <pre style="margin:1em">
 name
-<span class="stderr">Traceback (most recent call last):
-  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/./Go0.py", line 10, in &lt;module&gt;
-    from gtp_connection import GtpConnection
-  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/gtp_connection.py", line 17, in &lt;module&gt;
-    from transposition_table_simple import TranspositionTable
-ModuleNotFoundError: No module named 'transposition_table_simple'
+= Go0
+
+version
+= 1.0
+
+cputime
+? Unknown command
+
+</pre>
+<hr style="margin:1em" size="1">
+<pre style="margin:1em">
+<span class="command">boardsize 4
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+<span class="command">timelimit 10
+</span><span class="error">? Unknown command
+
+</span><span class="command">play b a4
+</span>= 
+
+<span class="command">play w a2
+</span>= 
+
+<span class="command">play b b1
+</span>= 
+
+<span class="command">play w b3
+</span>= 
+
+<span class="command">play b c2
+</span>= 
+
+<span class="command">play w d1
+</span>= 
+
+<span class="command">play b d3
+</span>= 
+
+<span class="test"><a name="10">10 solve
+</a>#?[w d4|w c4]
+</span><span class="fail">= w a1
+
 </span>
+<span class="command">boardsize 4
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+<span class="command">timelimit 70
+</span><span class="error">? Unknown command
+
+</span><span class="command">play b a4
+</span>= 
+
+<span class="command">play w a2
+</span>= 
+
+<span class="command">play b d1
+</span>= 
+
+<span class="command">play w d2
+</span>= 
+
+<span class="test"><a name="20">20 solve
+</a>#?[b a1|b b1|b b3]
+= b a1
+
+</span>
+<span class="command">boardsize 4
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+<span class="command">timelimit 50
+</span><span class="error">? Unknown command
+
+</span><span class="command">play b a4
+</span>= 
+
+<span class="command">play w a2
+</span>= 
+
+<span class="command">play b d1
+</span>= 
+
+<span class="command">play w d2
+</span>= 
+
+<span class="command">play b d3
+</span>= 
+
+<span class="test"><a name="30">30 solve
+</a>#?[w b1|w b2]
+</span><span class="fail">= w a1
+
+</span>
+<span class="command">boardsize 4
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+<span class="command">timelimit 5
+</span><span class="error">? Unknown command
+
+</span><span class="command">play b c1
+</span>= 
+
+<span class="command">play w b4
+</span>= 
+
+<span class="command">play b a3
+</span>= 
+
+<span class="command">play w d2
+</span>= 
+
+<span class="command">play b d4
+</span>= 
+
+<span class="command">play w a1
+</span>= 
+
+<span class="command">play b b3
+</span>= 
+
+<span class="command">play w c2
+</span>= 
+
+<span class="command">play b c3
+</span>= 
+
+<span class="command">play w b2
+</span>= 
+
+<span class="test"><a name="40">40 solve
+</a>#?[w]
+</span><span class="fail">= w b1
+
+</span>
+<span class="command">boardsize 4
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+<span class="command">timelimit 1
+</span><span class="error">? Unknown command
+
+</span><span class="command">play b c1
+</span>= 
+
+<span class="command">play w b4
+</span>= 
+
+<span class="command">play b a3
+</span>= 
+
+<span class="command">play w d2
+</span>= 
+
+<span class="command">play b d4
+</span>= 
+
+<span class="command">play w a1
+</span>= 
+
+<span class="command">play b b3
+</span>= 
+
+<span class="command">play w c2
+</span>= 
+
+<span class="command">play b c3
+</span>= 
+
+<span class="command">play w b2
+</span>= 
+
+<span class="command">play b a4
+</span>= 
+
+<span class="command">play w d1
+</span>= 
+
+<span class="command">play b a2
+</span>= 
+
+<span class="command">play w d3
+</span>= 
+
+<span class="test"><a name="50">50 genmove b
+</a></span><span class="stderr">Traceback (most recent call last):
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/./Go0.py", line 49, in &lt;module&gt;
+    run()
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/./Go0.py", line 45, in run
+    con.start_connection()
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/gtp_connection.py", line 98, in start_connection
+    self.get_cmd(line)
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/gtp_connection.py", line 126, in get_cmd
+    raise e
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/gtp_connection.py", line 122, in get_cmd
+    self.commands[command_name](args)
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/gtp_connection.py", line 363, in genmove_cmd
+    move = self.solve_cmd(args)
+  File "/Users/malhi/Documents/U of A/Fall 2022/CMPUT 455/Assignments/a21/assignment2/gtp_connection.py", line 400, in solve_cmd
+    is_success = result.get("is_success")
+AttributeError: 'bool' object has no attribute 'get'
